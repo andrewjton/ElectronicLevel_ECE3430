@@ -20,46 +20,43 @@ void initializeDisplay()
 }
 
 //sends raw bits and triggers latch
-void updateDisplay(unsigned char tens, unsigned char ones)
+void updateDisplay(unsigned char led)
 {
-	SPISendByte(ones);
-	SPISendByte(tens);
+	SPISendByte(led);
 
 	RISE_X_LATCH;
 	FALL_X_LATCH;
 }
 
-char convertToDisplay(int value)
+//not really used
+char convertToDisplay(LEDDirection d)
 {
 	// this is 0
 	char digit = 0x3f;
-	switch(value)
+	switch(d)
 	{
-		case 1:
+		case No:
 			digit = 0x06;
 			break;
-		case 2:
+		case NE:
 			digit = 0x5b;
 			break;
-		case 3:
+		case E:
 			digit = 0x4f;
 			break;
-		case 4:
+		case SE:
 			digit = 0x66;
 			break;
-		case 5:
+		case S:
 			digit = 0x6d;
 			break;
-		case 6:
-			digit = 0x7d;
-			break;
-		case 7:
+		case SW:
 			digit = 0x07;
 			break;
-		case 8:
+		case W:
 			digit = 0x7f;
 			break;
-		case 9:
+		case NW:
 			digit = 0x67;
 			break;
 		default:
@@ -67,13 +64,3 @@ char convertToDisplay(int value)
 	}
 	return digit;
 }
-
-void sendCount(int digit)
-{
-	//volatile int number = digit;
-	int tens = digit/10;
-	int ones = digit - (10*tens);
-	//sends the digits with the proper hex encodings
-	updateDisplay(convertToDisplay(tens),convertToDisplay(ones));
-}
-

@@ -36,6 +36,23 @@
 #define RISE_BLANK					BLANK_PORT |= BLANK_BIT
 #define FALL_BLANK					BLANK_PORT &= (~BLANK_BIT)
 
+//Bits which need to be on for each direction
+#define No	 0x01
+#define NE	 0x02
+#define E 	 0x04
+#define SE	 0x08
+#define S	 0x10
+#define SW 	 0x20
+#define W    0x40
+#define NW   0x80
+
+
+typedef enum
+{
+	No, NE, E, SE, S, SW, W, NW
+} LEDDirection;
+
+
 void initializeDisplay(void);
 
 //Displays the value into base 10 representation on the display
