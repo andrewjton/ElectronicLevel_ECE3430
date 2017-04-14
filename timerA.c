@@ -1,8 +1,8 @@
 #include "timerA.h"
-#include "LED.h"
+#include "LEDDisplay.h"
 
-extern int period;
-extern int direction;
+
+extern int [] level;
 
 void ConfigureTimers(void)
 {
@@ -44,17 +44,12 @@ __interrupt void Timer0_A1_routine(void)
 	//each led has a magnitude of brightness and a name
 	// for each LED, check its magnitude and compare if the clock is greater/less than the value. if less, stay on. if greater, turn off.
 
-	switch (TAIV){
-	case TA0IV_NONE:
-		break;
-	case TA0IV_TACCR1: // CCIFG1 interrupt
-		//when ccr1 is triggered, it means turn off the LED
-		TURN_OFF_LED1;
-		break;
-	case TA0IV_TAIFG: // TAIFG interrupt
-		//turn on LED!
-		TURN_ON_LED1;
-		break;
-	default: for (;;); // Should not be possible
+	unsigned char LED;
+	int i = 0;
+	for (; i < 8; i++) {
+		if (cycle >= level[i]) LED |= 0x01;
+		LED << 1;
 	}
+	updateDisplay(LEDs);
 }
+
