@@ -4,22 +4,22 @@
 
 extern int level [];
 extern int period;
+extern int x;
 
 void ConfigureTimerA(void)
 {
 	//Stopping and clearing
 	TA0CTL = (MC_0 | TACLR);
-	//Setting the timer as SMCLK and in up
 	TA0CTL |= (TASSEL_2 | MC_1);
-
-	//Setting the timer to divide by 4
 	TA0CTL |= ID_0;
-	//16 Mhz
+	TA0CTL |= TAIE;
 
 	TA0CCR0 =  period;
-
-	// enable the interrupts
 	TA0CCTL0 |= CCIE;
+
+
+	TA0CCR1 =  100;
+	TA0CCTL1 |= CCIE;
 }
 
 
@@ -27,17 +27,13 @@ void ConfigureTimerA(void)
 
 //controls the length of period
 //once 1 pwm cycle ends, change CCR1 (up or down)
-//#pragma vector = TIMER0_A0_VECTOR
-//// Interrupt service routine for CCIFG0
-//__interrupt void Timer0_A0_routine(void)
-//{
-//	//static int direction = 1; //static variable
-//	if (TA0CCR1 == period) direction = 0;
-//	if (TA0CCR1 == 90) direction = 1;
-//
-//	if (direction == 1) TA0CCR1++;
-//	else if (direction == 0) TA0CCR1--;
-//}
+#pragma vector = TIMER0_A1_VECTOR
+// Interrupt service routine for CCIFG0
+__interrupt void Timer0_A1_routine(void)
+{
+	x = ADC10MEM;
+	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+}
 
 
 
@@ -66,5 +62,7 @@ __interrupt void Timer0_A0_routine(void)
 	updateDisplay(LED);
 
 	cycle++;
+
+
 }
 
