@@ -4,6 +4,6 @@
 #include <msp430.h>
 
 // Prototypes
-void ConfigureTimers(void);
+void ConfigureTimerA(void);
 
 #endif

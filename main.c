@@ -1,19 +1,26 @@
 #include <msp430.h> 
+#include "LEDDisplay.h"
+#include "spi.h"
+#include "timerA.h"
+#include "cordic.h"
 
 /*
  * main.c
  */
 
-unsigned int period = 999;
-unsigned int direction = 0;
-unsigned int level [7];
+volatile unsigned int period = 9;
+volatile unsigned int direction = 0;
+volatile unsigned int level [8] = {10,1,0,0,0,1,10,30};
+
+void ConfigureClockModule();
 
 int main(void) {
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 	
-    InitializeLEDPortPins();
 	ConfigureClockModule();
-    ConfigureTimers(); //sets initial values for ccr1 (time on for LED) and ccr0 (timer)
+
+	initializeDisplay();
+    ConfigureTimerA(); //sets initial values for ccr1 (time on for LED) and ccr0 (timer)
 	_enable_interrupts();
 
 	while (1) {
@@ -21,4 +28,12 @@ int main(void) {
 	}
 
 	return 0;
+}
+
+void ConfigureClockModule(void)
+{
+    // Configure Digitally Controlled Oscillator (DCO) for 1 MHz using factory
+    // calibrations.
+	DCOCTL  = CALDCO_1MHZ;
+	BCSCTL1 = CALBC1_1MHZ;
 }

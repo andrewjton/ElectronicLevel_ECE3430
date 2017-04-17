@@ -8,7 +8,7 @@
 #define PI 3.1415926536897932384626
 
 // Local prototypes
-void ConfigureClockModule();
+/*void ConfigureClockModule();
 
 extern const long cordic_ctab_degrees[CORDIC_NTAB];
 
@@ -83,3 +83,4 @@ void ConfigureClockModule()
 	DCOCTL  = CALDCO_16MHZ;
 	BCSCTL1 = CALBC1_16MHZ;
 }
+*/

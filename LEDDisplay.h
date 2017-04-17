@@ -37,14 +37,14 @@
 #define FALL_BLANK					BLANK_PORT &= (~BLANK_BIT)
 
 //Bits which need to be on for each direction
-#define No	 0x01
-#define NE	 0x02
-#define E 	 0x04
-#define SE	 0x08
-#define S	 0x10
-#define SW 	 0x20
-#define W    0x40
-#define NW   0x80
+#define no	 0x80
+#define ne	 0x40
+#define e	 0x20
+#define se	 0x10
+#define s	 0x08
+#define sw 	 0x04
+#define w    0x02
+#define nw   0x01
 
 
 typedef enum
@@ -54,6 +54,7 @@ typedef enum
 
 
 void initializeDisplay(void);
+void updateDisplay(unsigned char led);
 
 //Displays the value into base 10 representation on the display
 void sendCount(int digit);
