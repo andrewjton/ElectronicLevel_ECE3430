@@ -1,10 +1,12 @@
 #include "timerA.h"
 #include "LEDDisplay.h"
 
-
+extern int gyro [];
 extern int level [];
 extern int period;
 extern int x;
+extern int y;
+extern int z;
 
 void ConfigureTimerA(void)
 {
@@ -18,7 +20,7 @@ void ConfigureTimerA(void)
 	TA0CCTL0 |= CCIE;
 
 
-	TA0CCR1 =  100;
+	TA0CCR1 =  1000;
 	TA0CCTL1 |= CCIE;
 }
 
@@ -31,8 +33,29 @@ void ConfigureTimerA(void)
 // Interrupt service routine for CCIFG0
 __interrupt void Timer0_A1_routine(void)
 {
-	x = ADC10MEM;
+
+	ADC10SA = gyro;
+
+	ADC10CTL0 &= ~ENC;
+	ADC10CTL0 |= ENC;
 	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+
+	while ((ADC10CTL1 & ADC10BUSY)) {}
+
+	ADC10CTL0 &= ~ENC;
+	ADC10CTL0 |= ENC;
+		ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+
+		while ((ADC10CTL1 & ADC10BUSY)) {
+
+		}
+
+		ADC10CTL0 &= ~ENC;
+		ADC10CTL0 |= ENC;
+			ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+
+			while ((ADC10CTL1 & ADC10BUSY)) {}
+
 }
 
 
