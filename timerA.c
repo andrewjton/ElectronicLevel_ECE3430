@@ -1,6 +1,15 @@
 #include "timerA.h"
 #include "LEDDisplay.h"
 
+
+#define NUMBER_OF_SAMPLES 8
+
+extern volatile int samples_x[];
+extern volatile int samples_y[];
+extern volatile int samples_z[];
+
+extern volatile int CurrentSample;
+extern volatile unsigned int CurrentSampleIndex;
 extern int gyro [];
 extern int level [];
 extern int period;
@@ -42,19 +51,26 @@ __interrupt void Timer0_A1_routine(void)
 
 	while ((ADC10CTL1 & ADC10BUSY)) {}
 
-	ADC10CTL0 &= ~ENC;
-	ADC10CTL0 |= ENC;
-		ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+	if (CurrentSampleIndex > NUMBER_OF_SAMPLES - 1) CurrentSampleIndex = 0;
+	samples_x[CurrentSampleIndex] = gyro[0];
+	samples_y[CurrentSampleIndex] = gyro[1];
+	samples_z[CurrentSampleIndex++] = gyro[2];
+	filter();
 
-		while ((ADC10CTL1 & ADC10BUSY)) {
+//
+//	ADC10CTL0 &= ~ENC;
+//	ADC10CTL0 |= ENC;
+//		ADC10CTL0 |= ADC10SC; // Start sampling and conversion
 
-		}
-
-		ADC10CTL0 &= ~ENC;
-		ADC10CTL0 |= ENC;
-			ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
-			while ((ADC10CTL1 & ADC10BUSY)) {}
+//		while ((ADC10CTL1 & ADC10BUSY)) {
+//
+//		}
+//
+//		ADC10CTL0 &= ~ENC;
+//		ADC10CTL0 |= ENC;
+//			ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+//
+//			while ((ADC10CTL1 & ADC10BUSY)) {}
 
 }
 
@@ -89,3 +105,25 @@ __interrupt void Timer0_A0_routine(void)
 
 }
 
+
+void filter()
+{
+	/* Moving average filter for ADC samples */
+
+
+	//iterate over circular buffer
+	int sum_x = 0;
+	int sum_y = 0;
+	int sum_z = 0;
+
+	int i = 0;
+	while (i < NUMBER_OF_SAMPLES) {
+		sum_x += samples_x[i];
+		sum_y += samples_y[i];
+		sum_z += samples_z[i];
+		i++;
+	}
+	x = sum_x >> 3;
+	y = sum_y >> 3;
+	z = sum_z >> 3;
+}

@@ -5,5 +5,6 @@
 
 // Prototypes
 void ConfigureTimerA(void);
+void filter(void);
 
 #endif

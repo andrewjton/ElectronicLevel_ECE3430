@@ -18,6 +18,12 @@ volatile unsigned int gyro[3];
 volatile unsigned int x;
 volatile unsigned int y;
 volatile unsigned int z;
+volatile int samples_x[8];
+volatile int samples_y[8];
+volatile int samples_z[8];
+
+volatile int CurrentSample;
+volatile unsigned int CurrentSampleIndex;
 
 void ConfigureClockModule();
 
@@ -29,37 +35,37 @@ int main(void) {
 
 	InitializePushButtonPortPin();
 	initializeDisplay();
-    //ConfigureTimerA(); //sets initial values for ccr1 (time on for LED) and ccr0 (timer)
+    ConfigureTimerA(); //sets initial values for ccr1 (time on for LED) and ccr0 (timer)
 	_enable_interrupts();
 
 	while (1) {
+//
+//		ADC10SA = gyro;
+//
+//			ADC10CTL0 &= ~ENC;
+//			ADC10CTL0 |= ENC;
+//			ADC10CTL0 |= ADC10SC; // Start sampling and conversion
 
-		ADC10SA = gyro;
-
-			ADC10CTL0 &= ~ENC;
-			ADC10CTL0 |= ENC;
-			ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
-			while ((ADC10CTL1 & ADC10BUSY)) {
-
-				x = 2;
-			}
-
-			ADC10CTL0 &= ~ENC;
-			ADC10CTL0 |= ENC;
-				ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
-				while ((ADC10CTL1 & ADC10BUSY)) {
-					y = 2;
-				}
-
-				ADC10CTL0 &= ~ENC;
-				ADC10CTL0 |= ENC;
-					ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
-					while ((ADC10CTL1 & ADC10BUSY)) {
-						z = 2;
-					}
+//			while ((ADC10CTL1 & ADC10BUSY)) {
+//
+//				x = 2;
+//			}
+//
+//			ADC10CTL0 &= ~ENC;
+//			ADC10CTL0 |= ENC;
+//				ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+//
+//				while ((ADC10CTL1 & ADC10BUSY)) {
+//					y = 2;
+//				}
+//
+//				ADC10CTL0 &= ~ENC;
+//				ADC10CTL0 |= ENC;
+//					ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+//
+//					while ((ADC10CTL1 & ADC10BUSY)) {
+//						z = 2;
+//					}
 
 
 
