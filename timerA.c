@@ -51,6 +51,17 @@ __interrupt void Timer0_A1_routine(void)
 
 	while ((ADC10CTL1 & ADC10BUSY)) {}
 
+	ADC10CTL0 &= ~ENC;
+	ADC10CTL0 |= ENC;
+	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+
+	while ((ADC10CTL1 & ADC10BUSY)) {}
+
+	ADC10CTL0 &= ~ENC;
+	ADC10CTL0 |= ENC;
+	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
+
+
 	if (CurrentSampleIndex > NUMBER_OF_SAMPLES - 1) CurrentSampleIndex = 0;
 	samples_x[CurrentSampleIndex] = gyro[0];
 	samples_y[CurrentSampleIndex] = gyro[1];

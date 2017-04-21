@@ -10,7 +10,7 @@
  * main.c
  */
 
-volatile unsigned int period = 900;
+volatile unsigned int period = 500;
 volatile unsigned int direction = 0;
 volatile unsigned int level[8] = {10,1,0,0,0,1,10,30};
 volatile unsigned int gyro[3];
@@ -39,6 +39,8 @@ int main(void) {
 	_enable_interrupts();
 
 	while (1) {
+		modifyLED(S, 30 );
+
 //
 //		ADC10SA = gyro;
 //

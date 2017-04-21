@@ -55,6 +55,7 @@ typedef enum
 
 void initializeDisplay(void);
 void updateDisplay(unsigned char led);
+char modifyLED(LEDDirection dir, int intensity );
 
 //Displays the value into base 10 representation on the display
 void sendCount(int digit);

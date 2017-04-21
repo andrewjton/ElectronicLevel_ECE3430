@@ -8,6 +8,8 @@
 #include "LEDDisplay.h"
 #include "spi.h"
 
+
+extern unsigned int level[];
 void initializeDisplay()
 {
 	InitializeSPI();
@@ -63,4 +65,35 @@ char convertToDisplay(LEDDirection d)
 			digit = 0x00;
 	}
 	return digit;
+}
+
+char modifyLED(LEDDirection dir, int intensity ) {
+	switch (dir) {
+	case No:
+		level[7] = intensity;
+		break;
+	case NE:
+		level[6] = intensity;
+		break;
+	case E:
+		level[5] = intensity;
+		break;
+	case SE:
+		level[4] = intensity;
+		break;
+	case S:
+		level[3] = intensity;
+		break;
+	case SW:
+		level[2] = intensity;
+		break;
+	case W:
+		level[1] = intensity;
+		break;
+	case NW:
+		level[0] = intensity;
+		break;
+	default:
+		break;
+	}
 }
