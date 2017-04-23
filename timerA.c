@@ -23,14 +23,18 @@ void ConfigureTimerA(void)
 	TA0CTL = (MC_0 | TACLR);
 	TA0CTL |= (TASSEL_2 | MC_1);
 	TA0CTL |= ID_0;
-	TA0CTL |= TAIE;
+
+	TA1CTL = (MC_0 | TACLR);
+	TA1CTL |= (TASSEL_2 | MC_1);
+	TA1CTL |= ID_0;
+	//TA0CTL |= TAIE;
 
 	TA0CCR0 =  period;
 	TA0CCTL0 |= CCIE;
 
 
-	TA0CCR1 =  1000;
-	TA0CCTL1 |= CCIE;
+	TA1CCR0 =  16000;
+	TA1CCTL0 |= CCIE;
 }
 
 
@@ -38,51 +42,25 @@ void ConfigureTimerA(void)
 
 //controls the length of period
 //once 1 pwm cycle ends, change CCR1 (up or down)
-#pragma vector = TIMER0_A1_VECTOR
+#pragma vector = TIMER1_A0_VECTOR
 // Interrupt service routine for CCIFG0
-__interrupt void Timer0_A1_routine(void)
+__interrupt void Timer1_A0_routine(void)
 {
-
-	ADC10SA = gyro;
-
 	ADC10CTL0 &= ~ENC;
+
+	ADC10SA = (unsigned int) gyro;
+
 	ADC10CTL0 |= ENC;
 	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
 	while ((ADC10CTL1 & ADC10BUSY)) {}
-
-	ADC10CTL0 &= ~ENC;
-	ADC10CTL0 |= ENC;
-	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
-	while ((ADC10CTL1 & ADC10BUSY)) {}
-
-	ADC10CTL0 &= ~ENC;
-	ADC10CTL0 |= ENC;
-	ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
 
 	if (CurrentSampleIndex > NUMBER_OF_SAMPLES - 1) CurrentSampleIndex = 0;
-	samples_x[CurrentSampleIndex] = gyro[0];
+	samples_x[CurrentSampleIndex] = gyro[2];
 	samples_y[CurrentSampleIndex] = gyro[1];
-	samples_z[CurrentSampleIndex++] = gyro[2];
+	samples_z[CurrentSampleIndex] = gyro[0];
+
+	CurrentSampleIndex++;
 	filter();
-
-//
-//	ADC10CTL0 &= ~ENC;
-//	ADC10CTL0 |= ENC;
-//		ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-
-//		while ((ADC10CTL1 & ADC10BUSY)) {
-//
-//		}
-//
-//		ADC10CTL0 &= ~ENC;
-//		ADC10CTL0 |= ENC;
-//			ADC10CTL0 |= ADC10SC; // Start sampling and conversion
-//
-//			while ((ADC10CTL1 & ADC10BUSY)) {}
-
 }
 
 
@@ -117,11 +95,8 @@ __interrupt void Timer0_A0_routine(void)
 }
 
 
-void filter()
+void filter() 	//can be optimized
 {
-	/* Moving average filter for ADC samples */
-
-
 	//iterate over circular buffer
 	int sum_x = 0;
 	int sum_y = 0;

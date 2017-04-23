@@ -11,6 +11,11 @@
 #include "pushbutton.h"
 
 void calibrationRoutine();
+void simpleCalibration();
+
+int getX();
+int getY();
+int getZ();
 
 
 #endif /* CALIBRATION_H_ */

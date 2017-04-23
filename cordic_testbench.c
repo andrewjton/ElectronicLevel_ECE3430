@@ -1,17 +1,17 @@
-#include <msp430.h>
-#include <math.h>
-#include "cordic.h"
-
-#define TEST_SIZE 5
-#define CORDIC_GAIN 0.607252935103139
-#define CORDIC_GAIN_X_EQUALS_Y (float) (sqrt(2)/2)
-#define PI 3.1415926536897932384626
-
-// Local prototypes
-/*void ConfigureClockModule();
-
-extern const long cordic_ctab_degrees[CORDIC_NTAB];
-
+//#include <msp430.h>
+//#include <math.h>
+//#include "cordic.h"
+//
+//#define TEST_SIZE 5
+//#define CORDIC_GAIN 0.607252935103139
+//#define CORDIC_GAIN_X_EQUALS_Y (float) (sqrt(2)/2)
+//#define PI 3.1415926536897932384626
+//
+//// Local prototypes
+//void ConfigureClockModule();
+//
+//extern const long cordic_ctab_degrees[CORDIC_NTAB];
+//
 //void main()
 //{
 //	float test_angles[TEST_SIZE] = {26.565,45.0, 0.0, 0.0, 0.0};
@@ -76,11 +76,11 @@ extern const long cordic_ctab_degrees[CORDIC_NTAB];
 //    	_nop();
 //    }
 //}
-
-void ConfigureClockModule()
-{
-	// Configure Digitally Controlled Oscillator (DCO) for 16 MHz using factory calibrations
-	DCOCTL  = CALDCO_16MHZ;
-	BCSCTL1 = CALBC1_16MHZ;
-}
-*/
+//
+//void ConfigureClockModule()
+//{
+//	// Configure Digitally Controlled Oscillator (DCO) for 16 MHz using factory calibrations
+//	DCOCTL  = CALDCO_16MHZ;
+//	BCSCTL1 = CALBC1_16MHZ;
+//}
+//*/
