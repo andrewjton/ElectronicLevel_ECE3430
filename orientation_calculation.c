@@ -73,10 +73,12 @@ LEDDirection getDirection()
 	//need atan(hypotenuse/z)
 	calc.y = calc.x;
 	calc.x = (getZ() << 8);
+	if(calc.x < 0)
+		calc.x = -calc.x;
 	//calc.x is implicitly the hypotenuse after the previous operations
 	calc.angle = 0;
 	Cordic(&calc,ATAN_HYP);
-	if(calc.angle < 1000)
+	if(calc.angle < 2000)
 		retVal = All;
 	//calc.angle is now theta
 

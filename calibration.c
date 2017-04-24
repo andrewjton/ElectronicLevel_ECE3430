@@ -20,30 +20,41 @@ void calibrationRoutine()
 {
 	//getting min x
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	rangex[0] = x;
 	//10/4 of a second?
 	_delay_cycles(2500000);
 
 	//getting max
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+
 	rangex[1] = x;
 	_delay_cycles(2500000);
 
 
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+
 	rangey[0] = y;
 	_delay_cycles(2500000);
 
 	//getting max
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+
 	rangey[1] = y;
 	_delay_cycles(2500000);
 
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+
 	rangez[0] = z;
 	_delay_cycles(2500000);
 	//getting max
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+
 	rangez[1] = z;
 	_delay_cycles(2500000);
 
@@ -63,17 +74,14 @@ void simpleCalibration()
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	offsets[0] = x;
 	offsets[1] = y;
+	rangez[0] = z;
 
 	_delay_cycles(250000);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
-	rangez[0] = z; // this is the max or min of z (if held upside down)
-
-	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
-	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	rangez[1] = z; // this is the max or min of z (if held upside down)
-
 	offsets[2] = ((rangez[0] + rangez[1]) >> 1);
+
 }
 //subroutines for getting the calibrated cartesian values
 int getX()

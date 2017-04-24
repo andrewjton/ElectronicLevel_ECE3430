@@ -49,7 +49,8 @@ int main(void) {
 	//initialize to pointing north
 	setLevelLEDs(NW);
 
-	simpleCalibration();
+	calibrationRoutine();
+	//simpleCalibration();
 
 
 	while (1) {
