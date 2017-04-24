@@ -49,14 +49,14 @@
 
 typedef enum
 {
-	No, NE, E, SE, S, SW, W, NW
+	NW, W, SW, S, SE, E, NE, No
 } LEDDirection;
 
 
 void initializeDisplay(void);
 void updateDisplay(unsigned char led);
-char modifyLED(LEDDirection dir, int intensity );
-
+void modifyLED(LEDDirection dir, int intensity );
+void setLevelLEDs(LEDDirection dir);
 //Displays the value into base 10 representation on the display
 void sendCount(int digit);
 

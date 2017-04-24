@@ -30,44 +30,9 @@ void updateDisplay(unsigned char led)
 	FALL_X_LATCH;
 }
 
-//not really used
-char convertToDisplay(LEDDirection d)
-{
-	// this is 0
-	char digit = 0x3f;
-	switch(d)
-	{
-		case No:
-			digit = 0x06;
-			break;
-		case NE:
-			digit = 0x5b;
-			break;
-		case E:
-			digit = 0x4f;
-			break;
-		case SE:
-			digit = 0x66;
-			break;
-		case S:
-			digit = 0x6d;
-			break;
-		case SW:
-			digit = 0x07;
-			break;
-		case W:
-			digit = 0x7f;
-			break;
-		case NW:
-			digit = 0x67;
-			break;
-		default:
-			digit = 0x00;
-	}
-	return digit;
-}
-
-char modifyLED(LEDDirection dir, int intensity ) {
+// changed enum order to directly map to LED array
+void modifyLED(LEDDirection dir, int intensity ) {
+	level[dir] = intensity;
 	switch (dir) {
 	case No:
 		level[7] = intensity;
@@ -97,3 +62,31 @@ char modifyLED(LEDDirection dir, int intensity ) {
 		break;
 	}
 }
+
+//the directions wrap around
+void setLevelLEDs(LEDDirection dir)
+{
+	int direction = dir;
+
+	level[dir] = 30; //closest direction
+
+	direction++;
+	if(direction > 7)
+		direction = 0;
+	level[direction] = 10; //1 LED clockwise
+	direction++;
+		if(direction > 7)
+			direction = 0;
+		level[direction] = 1; //2 LED clockwise
+
+	direction = dir;
+	direction--;
+		if(direction < 0)
+			direction = 7;
+	level[direction] = 10; //1 LED counter-clockwise
+	direction--;
+		if(direction < 0)
+			direction = 0;
+		level[direction] = 1; //2 LED counter-clockwise
+}
+

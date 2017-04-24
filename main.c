@@ -6,7 +6,7 @@
 #include "ADC.h"
 #include "pushbutton.h"
 #include "calibration.h"
-
+#include "orientation_calculation.h"
 /*
  * main.c
  */
@@ -46,10 +46,14 @@ int main(void) {
     ConfigureTimerA(); //sets initial values for ccr1 (time on for LED) and ccr0 (timer)
 	_enable_interrupts();
 
-	calibrationRoutine();
+	//initialize to pointing north
+	setLevelLEDs(No);
+
+	simpleCalibration();
+
 
 	while (1) {
-		modifyLED(S, 30 );
+		setLevelLEDs(getDirection());
 
 	}
 }

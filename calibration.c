@@ -48,10 +48,10 @@ void calibrationRoutine()
 	_delay_cycles(2500000);
 
 	//getting the level
-	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
-	offsets[0] = x;
-	offsets[1] = y;
-	offsets[2] = z;
+	//while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	offsets[0] = ((rangex[0] + rangex[1])>>1);
+	offsets[1] = ((rangey[0] + rangey[1])>>1);
+	offsets[2] = ((rangez[0] + rangez[1])>>1);
 	_delay_cycles(2500000);
 }
 
