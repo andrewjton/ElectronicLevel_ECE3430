@@ -15,60 +15,53 @@ LEDDirection getDirection()
 	//calc.x = (10<<8); calc.y = (-1<<8);
 	calc.angle = 0;
 
-	if (calc.x >= 0 && calc.y >= 0) // positive angles from x axis
+	if (calc.x >= 0 && calc.y <= 0) // positive angles from x axis
+	{
+		calc.y = -calc.y;
+		Cordic(&calc,ATAN_HYP);
+		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
+			retVal = E;
+		else if(calc.angle > 5760) //22.5  degrees
+			retVal = NE;
+		else retVal = No;
+	}
+	if (calc.x < 0 && calc.y < 0) // negative angles from x axis
+	{
+		calc.y = -calc.y;
+		calc.x = -calc.x;
+		Cordic(&calc,ATAN_HYP);
+		debug = 1;
+		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
+			retVal = E;
+		else if(calc.angle > 5760) //22.5 + 45 degrees
+			retVal = SE;
+		else retVal = S;
+	}
+	if (calc.x > 0 && calc.y > 0) // switching east to west
 	{
 		Cordic(&calc,ATAN_HYP);
 		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
-			retVal = No;
-		debug = 2;
-		if(calc.angle > 5760) //22.5  degrees
-			retVal = NE;
-		debug = 1;
-		retVal = E;
+			retVal = W;
+		else if(calc.angle > 5760) //22.5 + 45 degrees
+			retVal = NW;
+		else retVal = No;
 	}
-	else
+
+	if (calc.x < 0 && calc.y > 0) // south/southwest
 	{
+		calc.x = -calc.x;
+
 		Cordic(&calc,ATAN_HYP);
+		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
+			retVal = W;
+		else if(calc.angle > 5760) //22.5 + 45 degrees
+			retVal = SW;
+		else retVal = S;
 	}
-
-//	if (calc.x > 0 && calc.y < 0) // negative angles from x axis
+//	else
 //	{
-//		calc.y = -calc.y;
-//
 //		Cordic(&calc,ATAN_HYP);
-//		debug = 1;
-//		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
-//			return S;
-//		if(calc.angle > 5760) //22.5 + 45 degrees
-//			return SE;
-//		return E;
 //	}
-//
-//	if (calc.x < 0 && calc.y > 0) // switching east to west
-//	{
-//		calc.x = -calc.x;
-//
-//		Cordic(&calc,ATAN_HYP);
-//		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
-//			return No;
-//		if(calc.angle > 5760) //22.5 + 45 degrees
-//			return NW;
-//		return W;
-//	}
-//
-//	if (calc.x < 0 && calc.y < 0) // south/southwest
-//	{
-//		calc.x = -calc.x;
-//		calc.y = -calc.y;
-//
-//		Cordic(&calc,ATAN_HYP);
-//		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
-//			return S;
-//		if(calc.angle > 5760) //22.5 + 45 degrees
-//			return SW;
-//		return W;
-//	}
-
 	//This is for calculating the intensity of the tilt
 	//need atan(hypotenuse/z)
 	calc.y = calc.x;
