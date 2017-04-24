@@ -47,14 +47,14 @@ int main(void) {
 	_enable_interrupts();
 
 	//initialize to pointing north
-	setLevelLEDs(No);
+	setLevelLEDs(NW);
 
 	simpleCalibration();
 
 
 	while (1) {
-		setLevelLEDs(getDirection());
-
+		modifyLED(getDirection(),30);
+		//setLevelLEDs(getDirection());
 	}
 }
 

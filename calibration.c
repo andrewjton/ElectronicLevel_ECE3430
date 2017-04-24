@@ -60,9 +60,20 @@ void calibrationRoutine()
 void simpleCalibration()
 {
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	offsets[0] = x;
 	offsets[1] = y;
-	offsets[2] = z; // this is the max or min of z (if held upside down)
+
+	_delay_cycles(250000);
+	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	rangez[0] = z; // this is the max or min of z (if held upside down)
+
+	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	rangez[1] = z; // this is the max or min of z (if held upside down)
+
+	offsets[2] = ((rangez[0] + rangez[1]) >> 1);
 }
 //subroutines for getting the calibrated cartesian values
 int getX()
@@ -70,4 +81,4 @@ int getX()
 int getY()
 {return (y - offsets[1]);}
 int getZ()
-{return (z - offsets[2]);}
+{return (offsets[2] - z);}

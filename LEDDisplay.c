@@ -32,6 +32,13 @@ void updateDisplay(unsigned char led)
 
 // changed enum order to directly map to LED array
 void modifyLED(LEDDirection dir, int intensity ) {
+
+int i = 0;
+	for(i = 0; i < 8; i++)
+		{
+			level[i] = 0;
+		}
+
 	level[dir] = intensity;
 	switch (dir) {
 	case No:
@@ -61,13 +68,25 @@ void modifyLED(LEDDirection dir, int intensity ) {
 	default:
 		break;
 	}
+	if(dir == All)
+		{
+			for(i = 0; i < 8; i++)
+					{
+						level[i] = 2;
+					}
+		}
 }
 
 //the directions wrap around
 void setLevelLEDs(LEDDirection dir)
 {
-	int direction = dir;
+	int i;
+	for(i = 0; i < 8; i++)
+	{
+		level[i] = 0;
+	}
 
+	int direction = dir;
 	level[dir] = 30; //closest direction
 
 	direction++;
@@ -88,5 +107,13 @@ void setLevelLEDs(LEDDirection dir)
 		if(direction < 0)
 			direction = 0;
 		level[direction] = 1; //2 LED counter-clockwise
+
+	if(dir == All)
+		{
+			for(i = 0; i < 8; i++)
+					{
+						level[i] = 2;
+					}
+		}
 }
 
