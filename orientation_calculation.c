@@ -2,20 +2,24 @@
 #include "calibration.h"
 #include "LEDDisplay.h"
 
+extern unsigned int intensity;
+
 LEDDirection getDirection()
 {
 	volatile int debug = 0;
-	LEDDirection retVal = No;
+	LEDDirection retVal = None;
 
 	calculations calc;
 	//use the multiplier 256
 	calc.x = (getX() << 8);
 	calc.y = (getY() << 8);
 
-	//calc.x = (10<<8); calc.y = (-1<<8);
+	int ax = calc.x;
+	int ay = calc.y;
+
 	calc.angle = 0;
 
-	if (calc.x >= 0 && calc.y <= 0) // positive angles from x axis
+	if (ax >= 0 && ay <= 0) // positive angles from x axis
 	{
 		calc.y = -calc.y;
 		Cordic(&calc,ATAN_HYP);
@@ -25,7 +29,7 @@ LEDDirection getDirection()
 			retVal = NE;
 		else retVal = No;
 	}
-	if (calc.x < 0 && calc.y < 0) // negative angles from x axis
+	if (ax <= 0 && ay <= 0) // negative angles from x axis
 	{
 		calc.y = -calc.y;
 		calc.x = -calc.x;
@@ -37,7 +41,7 @@ LEDDirection getDirection()
 			retVal = SE;
 		else retVal = S;
 	}
-	if (calc.x > 0 && calc.y > 0) // switching east to west
+	if (ax >= 0 && ay >= 0) // switching east to west
 	{
 		Cordic(&calc,ATAN_HYP);
 		if(calc.angle > 17280)  // if > 22.5 degrees, should be northeast
@@ -47,7 +51,7 @@ LEDDirection getDirection()
 		else retVal = No;
 	}
 
-	if (calc.x < 0 && calc.y > 0) // south/southwest
+	if (ax <= 0 && ay >= 0) // south/southwest
 	{
 		calc.x = -calc.x;
 
@@ -71,9 +75,11 @@ LEDDirection getDirection()
 	//calc.x is implicitly the hypotenuse after the previous operations
 	calc.angle = 0;
 	Cordic(&calc,ATAN_HYP);
-	if(calc.angle < 2000)
+	if(calc.angle < 1000)
 		retVal = All;
 	//calc.angle is now theta
+	//should be range 0-90
+	intensity = (calc.angle >> 8);
 
 	return retVal;
 }

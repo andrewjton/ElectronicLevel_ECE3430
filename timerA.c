@@ -70,14 +70,14 @@ __interrupt void Timer1_A0_routine(void)
 // Interrupt service routine for CCIFG1 and TAIFG
 __interrupt void Timer0_A0_routine(void)
 {
-	//this controls the brightness of 8 different LED ports.
-	//each led has a magnitude of brightness and a name
-	// for each LED, check its magnitude and compare if the clock is greater/less than the value. if less, stay on. if greater, turn off.
+	//this controls the brightness of 8 different LEDs
+	//each led has a level of brightness and a name
+	// for each LED, check its level and compare if the clock "cycle" is greater/less than the value. if less, stay on. if greater, turn off.
 
 	volatile unsigned char LED = 0x00;
 	static int cycle = 0;
 
-	if(cycle >= 30)
+	if(cycle >= 200)
 	{
 		cycle = 0;
 	}

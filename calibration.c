@@ -5,6 +5,7 @@
  *      Author: syedm_000
  */
 #include "calibration.h"
+#include "LEDDisplay.h"
 
 extern unsigned int x;
 extern unsigned int y;
@@ -18,52 +19,51 @@ extern int offsets[3]; // zero point offsets
 
 void calibrationRoutine()
 {
-	//getting min x
+	modifyLED(No,200);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	rangex[0] = x;
-	//10/4 of a second?
 	_delay_cycles(2500000);
 
-	//getting max
+	modifyLED(S,200);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 
 	rangex[1] = x;
 	_delay_cycles(2500000);
 
-
+	modifyLED(W,200);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 
 	rangey[0] = y;
 	_delay_cycles(2500000);
 
-	//getting max
+	modifyLED(E,200);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 
 	rangey[1] = y;
 	_delay_cycles(2500000);
 
+	modifyLED(ZP,200);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 
 	rangez[0] = z;
 	_delay_cycles(2500000);
-	//getting max
+
+	modifyLED(ZN,200);
 	while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 	while(!(PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
 
 	rangez[1] = z;
 	_delay_cycles(2500000);
 
-	//getting the level
-	//while((PUSHBUTTON_PORT_IN & PUSHBUTTON_BIT));
+	//averaging and getting the offset
 	offsets[0] = ((rangex[0] + rangex[1])>>1);
 	offsets[1] = ((rangey[0] + rangey[1])>>1);
 	offsets[2] = ((rangez[0] + rangez[1])>>1);
-	_delay_cycles(2500000);
 }
 
 //all we really need are the x,y offsets from 0

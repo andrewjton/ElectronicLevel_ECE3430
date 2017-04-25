@@ -11,10 +11,11 @@
  * main.c
  */
 
-volatile unsigned int period = 8000;
+volatile unsigned int period = 1000;
 volatile unsigned int direction = 0;
 volatile unsigned int level[8] = {10,1,0,0,0,1,10,30};
 volatile unsigned int gyro[3];
+volatile unsigned int intensity = 0;
 
 volatile unsigned int x;
 volatile unsigned int y;
@@ -49,13 +50,13 @@ int main(void) {
 	//initialize to pointing north
 	setLevelLEDs(NW);
 
-//	calibrationRoutine();
-	simpleCalibration();
+	calibrationRoutine();
+	//simpleCalibration();
 
 
 	while (1) {
-		modifyLED(getDirection(),30);
-		//setLevelLEDs(getDirection());
+		//modifyLED(getDirection(),30);
+		setLevelLEDs(getDirection());
 	}
 }
 
