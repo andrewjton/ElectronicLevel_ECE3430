@@ -6,7 +6,6 @@ extern unsigned int intensity;
 
 LEDDirection getDirection()
 {
-	volatile int debug = 0;
 	LEDDirection retVal = None;
 
 	calculations calc;
