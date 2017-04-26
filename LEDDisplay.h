@@ -49,7 +49,7 @@
 
 typedef enum
 {
-	NW, W, SW, S, SE, E, NE, No, All
+	NW, W, SW, S, SE, E, NE, No, All, None, ZP, ZN
 } LEDDirection;
 
 

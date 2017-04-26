@@ -10,6 +10,8 @@
 
 
 extern unsigned int level[];
+extern unsigned int intensity;
+
 void initializeDisplay()
 {
 	InitializeSPI();
@@ -72,48 +74,69 @@ int i = 0;
 		{
 			for(i = 0; i < 8; i++)
 					{
-						level[i] = 2;
+						level[i] = 5;
 					}
 		}
+	if(dir == ZP)
+	{
+		for(i = 1; i < 8; i+=2)
+		{
+			level[i]= intensity;
+		}
+	}
+	if(dir == ZN)
+	{
+		for(i = 0; i < 8; i+=2)
+		{
+			level[i]= intensity;
+		}
+	}
 }
 
 //the directions wrap around
 void setLevelLEDs(LEDDirection dir)
 {
-	int i;
+	int i =0;
 	for(i = 0; i < 8; i++)
 	{
 		level[i] = 0;
 	}
 
 	int direction = dir;
-	level[dir] = 30; //closest direction
+	level[dir] = 5*intensity; //closest direction
 
 	direction++;
 	if(direction > 7)
 		direction = 0;
-	level[direction] = 10; //1 LED clockwise
+	level[direction] = 20; //1 LED counter clockwise
 	direction++;
 		if(direction > 7)
 			direction = 0;
-		level[direction] = 1; //2 LED clockwise
+		level[direction] = 5; //2 LED counter clockwise
 
 	direction = dir;
 	direction--;
 		if(direction < 0)
 			direction = 7;
-	level[direction] = 10; //1 LED counter-clockwise
+	level[direction] = 20; //1 LED clockwise
 	direction--;
 		if(direction < 0)
-			direction = 0;
-		level[direction] = 1; //2 LED counter-clockwise
+			direction = 7;
+		level[direction] = 5; //2 LED clockwise
 
 	if(dir == All)
 		{
 			for(i = 0; i < 8; i++)
 					{
-						level[i] = 2;
+						level[i] = 30;
 					}
 		}
+	if(dir == None)
+	{
+	for(i = 0; i < 8; i++)
+		{
+			level[i] = 0;
+		}
+	}
 }
 
